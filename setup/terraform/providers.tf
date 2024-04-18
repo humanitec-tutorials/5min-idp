@@ -1,0 +1,33 @@
+terraform {
+  required_providers {
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.13"
+    }
+    humanitec = {
+      source  = "humanitec/humanitec"
+      version = "~> 1.3"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.6"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0"
+    }
+  }
+
+  required_version = ">= 1.3.0"
+}
+
+provider "humanitec" {
+  org_id = var.humanitec_org
+}
+
+
+provider "helm" {
+  kubernetes {
+    config_path = var.kubeconfig
+  }
+}

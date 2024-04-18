@@ -1,0 +1,3 @@
+kube/*
+setup/terraform/.terraform*
+setup/terraform/terraform.tfstate*
