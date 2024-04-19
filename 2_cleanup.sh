@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+# connect current container to the kind network
+container_name="5min-idp"
+if [ "$(docker inspect -f='{{json .NetworkSettings.Networks.kind}}' "${container_name}")" = 'null' ]; then
+  docker network connect "kind" "${container_name}"
+fi
+
 humctl_token=$(yq .token /root/.humctl)
 kubeconfig_docker=$(pwd)/kube/config-internal.yaml
 
