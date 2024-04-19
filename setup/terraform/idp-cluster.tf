@@ -1,8 +1,17 @@
 # Configure k8s cluster by exposing the locally running Kubernetes Cluster to the Humanitec Orchestrator
 # using the Humanitec Agent
 
+resource "tls_private_key" "agent_private_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+locals {
+  agent_id = "${local.prefix}agent"
+}
+
 resource "humanitec_agent" "agent" {
-  id          = var.agent_id
+  id          = local.agent_id
   description = "5min-idp"
   public_keys = [{
     key = tls_private_key.agent_private_key.public_key_pem
@@ -33,14 +42,14 @@ resource "helm_release" "humanitec_agent" {
 }
 
 resource "humanitec_resource_definition" "agent" {
-  id   = var.agent_id
-  name = var.agent_id
+  id   = local.agent_id
+  name = local.agent_id
   type = "agent"
 
   driver_type = "humanitec/agent"
   driver_inputs = {
     values_string = jsonencode({
-      id = var.agent_id
+      id = local.agent_id
     })
   }
 
@@ -52,15 +61,18 @@ resource "humanitec_resource_definition" "agent" {
 resource "humanitec_resource_definition_criteria" "agent" {
   resource_definition_id = humanitec_resource_definition.agent.id
   res_id                 = "agent"
+  app_id                 = humanitec_application.demo.id
+
+  force_delete = true
 }
 
 locals {
   parsed_kubeconfig = yamldecode(file(var.kubeconfig))
 }
 
-resource "humanitec_resource_definition" "local_cluster" {
-  id          = "${var.agent_id}-cluster"
-  name        = "${var.agent_id}-cluster"
+resource "humanitec_resource_definition" "cluster_local" {
+  id          = "${local.prefix}k8s-cluster"
+  name        = "${local.prefix}k8s-cluster"
   type        = "k8s-cluster"
   driver_type = "humanitec/k8s-cluster"
 
@@ -74,13 +86,15 @@ resource "humanitec_resource_definition" "local_cluster" {
       credentials = local.parsed_kubeconfig["users"][0]["user"]
     })
   }
+}
+
+resource "humanitec_resource_definition_criteria" "cluster_local" {
+  resource_definition_id = humanitec_resource_definition.cluster_local.id
+  app_id                 = humanitec_application.demo.id
+
+  force_delete = true
 
   depends_on = [
     humanitec_resource_definition_criteria.agent
   ]
-}
-
-
-resource "humanitec_resource_definition_criteria" "local_cluster" {
-  resource_definition_id = humanitec_resource_definition.local_cluster.id
 }

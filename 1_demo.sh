@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-if ! humctl get application 5min-idp; then
-  humctl create application 5min-idp
-  echo "App created"
-fi
-
 echo "Deploying workload"
 
-humctl score deploy --app 5min-idp --env development -f ./score.yaml
+humanitec_app=$(terraform -chdir=setup/terraform output -raw humanitec_app)
+
+humctl score deploy --app "$humanitec_app" --env development -f ./score.yaml
 
 echo "Waiting for deployment"
 
 sleep 1
 
 DEPLOYMENT_ID=$(humctl get deployment . -o json \
-    --app 5min-idp \
+    --app "$humanitec_app" \
     --env development \
     | jq -r .metadata.id)
 
@@ -24,7 +21,7 @@ CURRENT_STATUS=""
 
 while [ "$IS_DONE" = false ]; do
   CURRENT_STATUS=$(humctl get deployment "${DEPLOYMENT_ID}" -o json \
-    --app 5min-idp \
+    --app "$humanitec_app" \
     --env development \
     | jq -r .status.status)
 
@@ -40,17 +37,22 @@ while [ "$IS_DONE" = false ]; do
   fi
 done
 if [ "$CURRENT_STATUS" = "failed" ]; then
-  humctl get deployment-error --app 5min-idp --env development
+  humctl get deployment-error --app "$humanitec_app" --env development
   exit 1
 fi
 
-workload_host=$(humctl get active-resources --app 5min-idp --env development -o yaml | yq '.[] | select(.metadata.type == "route") | .status.resource.host')
+workload_host=$(humctl get active-resources --app "$humanitec_app" --env development -o yaml | yq '.[] | select(.metadata.type == "route") | .status.resource.host')
 
 echo "Waiting for workload to be available"
 
 # manually change the host here as the workload host resolves to localhost, which is not reachable from the container
-curl -I --retry 20 --retry-delay 3 --retry-all-errors --fail \
+if curl -I --retry 20 --retry-delay 3 --retry-all-errors --fail \
   --connect-to "$workload_host:30080:5min-idp-control-plane:30080" \
-  "http://$workload_host:30080"
-
-echo "Workload available at: http://$workload_host:30080"
+  "http://$workload_host:30080"; then
+  echo "Workload available at: http://$workload_host:30080"
+else
+  echo "Workload not available"
+  kubectl get pods --all-namespaces
+  kubectl -n "$humanitec_app-development" logs deployment/hello-world
+  exit 1
+fi
