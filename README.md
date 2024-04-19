@@ -27,7 +27,7 @@ export HUMANITEC_ORG=MY_ORG
     -v $HOME/.humctl:/root/.humctl \
     -v /var/run/docker.sock:/var/run/docker.sock \
     --network bridge \
-    ghcr.io/humanitec/5min-idp
+    ghcr.io/humanitec-tutorials/5min-idp
   ```
 
 * Use it!

@@ -1,5 +1,5 @@
 IMG_TAG ?= latest
-IMG ?= ghcr.io/humanitec/5min-idp:$(IMG_TAG)
+IMG ?= ghcr.io/humanitec-tutorials/5min-idp:$(IMG_TAG)
 PLATFORM ?= linux/amd64,linux/arm64
 
 # Build the 5min-idp image
