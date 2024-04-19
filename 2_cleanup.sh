@@ -23,4 +23,4 @@ terraform -chdir=setup/terraform destroy -auto-approve
 
 kind delete cluster -n 5min-idp
 
-rm -rf ./kube
+rm -rf /state/kube
