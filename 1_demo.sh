@@ -49,6 +49,6 @@ workload_host=$(humctl get active-resources --app 5min-idp --env development -o 
 echo "Waiting for workload to be available"
 
 # manually change the host here as the workload host resolves to localhost, which is not reachable from the container
-curl -I --retry 10 --retry-delay 3 --connect-to "$workload_host:30080:5min-idp-control-plane:30080" "http://$workload_host:30080"
+curl -I --retry 10 --retry-delay 3 --retry-all-errors --connect-to "$workload_host:30080:5min-idp-control-plane:30080" --fail "http://$workload_host:30080"
 
 echo "Workload available at: http://$workload_host:30080"

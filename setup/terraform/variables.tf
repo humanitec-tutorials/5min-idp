@@ -11,15 +11,9 @@ variable "agent_id" {
 }
 
 variable "kubeconfig" {
-  description = "Kubeconfig used by terraform"
+  description = "Kubeconfig used by the Humanitec Agent / terraform"
   type        = string
-  default     = "../../kube/config.yaml"
-}
-
-variable "agent_kubeconfig" {
-  description = "Kubeconfig used by the Humanitec Agent"
-  type        = string
-  default     = "../../kube/config-internal.yaml"
+  default     = "/state/kube/config-internal.yaml"
 }
 
 resource "tls_private_key" "agent_private_key" {

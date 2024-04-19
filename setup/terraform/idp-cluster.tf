@@ -55,7 +55,7 @@ resource "humanitec_resource_definition_criteria" "agent" {
 }
 
 locals {
-  kubeconfig = yamldecode(file(var.agent_kubeconfig))
+  parsed_kubeconfig = yamldecode(file(var.kubeconfig))
 }
 
 resource "humanitec_resource_definition" "local_cluster" {
@@ -67,11 +67,11 @@ resource "humanitec_resource_definition" "local_cluster" {
   driver_inputs = {
     values_string = jsonencode({
       loadbalancer = "0.0.0.0" # ensure dns records are created pointing to localhost
-      cluster_data = local.kubeconfig["clusters"][0]["cluster"]
+      cluster_data = local.parsed_kubeconfig["clusters"][0]["cluster"]
     })
     secrets_string = jsonencode({
       agent_url   = "$${resources['agent#agent'].outputs.url}"
-      credentials = local.kubeconfig["users"][0]["user"]
+      credentials = local.parsed_kubeconfig["users"][0]["user"]
     })
   }
 

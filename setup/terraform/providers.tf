@@ -1,4 +1,8 @@
 terraform {
+  backend "local" {
+    path = "/state/terraform/terraform.tfstate"
+  }
+
   required_providers {
     helm = {
       source  = "hashicorp/helm"
@@ -24,7 +28,6 @@ terraform {
 provider "humanitec" {
   org_id = var.humanitec_org
 }
-
 
 provider "helm" {
   kubernetes {

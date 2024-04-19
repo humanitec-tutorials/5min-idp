@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-mkdir -p ./kube
+mkdir -p /state/kube
 
-if [ ! -f ./kube/config.yaml ]; then
-  kind create cluster -n 5min-idp --kubeconfig ./kube/config.yaml --config ./setup/kind/cluster.yaml
+if [ ! -f /state/kube/config.yaml ]; then
+  kind create cluster -n 5min-idp --kubeconfig /state/kube/config.yaml --config ./setup/kind/cluster.yaml
 fi
 
 # connect current container to the kind network
@@ -14,7 +14,7 @@ if [ "$(docker inspect -f='{{json .NetworkSettings.Networks.kind}}' "${container
 fi
 
 # used by humanitec-agent / inside docker to reach the cluster
-kubeconfig_docker=$(pwd)/kube/config-internal.yaml
+kubeconfig_docker=/state/kube/config-internal.yaml
 kind export kubeconfig --internal  -n 5min-idp --kubeconfig "$kubeconfig_docker"
 
 humctl_token=$(yq .token /root/.humctl)

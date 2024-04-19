@@ -23,7 +23,7 @@ export HUMANITEC_ORG=MY_ORG
   ```bash
   docker run --rm -it -h 5min-idp --name 5min-idp --pull always \
     -e HUMANITEC_ORG \
-    -v $(PWD):/app \
+    -v hum-5min-idp:/state \
     -v $HOME/.humctl:/root/.humctl \
     -v /var/run/docker.sock:/var/run/docker.sock \
     --network bridge \

@@ -49,6 +49,10 @@ RUN mkdir /tmp/humctl && \
   humctl completion bash > /etc/bash_completion.d/humctl && \
   rm -rf /tmp/humctl
 
+ENV KUBECONFIG="/state/kube/config-internal.yaml"
+
+COPY . /app
+
 WORKDIR /app
 
 ENTRYPOINT ["/bin/bash"]
