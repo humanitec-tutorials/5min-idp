@@ -43,7 +43,7 @@ RUN  curl -fsSL https://github.com/mikefarah/yq/releases/latest/download/yq_linu
 
 # install humctl (https://github.com/humanitec/cli/releases)
 RUN mkdir /tmp/humctl && \
-  curl -fsSL https://github.com/humanitec/cli/releases/download/v0.21.0/cli_0.21.0_linux_${TARGETARCH}.tar.gz > /tmp/humctl/humctl.tar.gz && \
+  curl -fsSL https://github.com/humanitec/cli/releases/download/v0.21.1/cli_0.21.1_linux_${TARGETARCH}.tar.gz > /tmp/humctl/humctl.tar.gz && \
   tar -zxvf /tmp/humctl/humctl.tar.gz -C /tmp/humctl && \
   install -o root -g root -m 0755 /tmp/humctl/humctl /usr/local/bin/humctl && \
   humctl completion bash > /etc/bash_completion.d/humctl && \

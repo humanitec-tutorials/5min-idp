@@ -5,10 +5,10 @@ mkdir -p ./kube
 
 if [ ! -f ./kube/config.yaml ]; then
   kind create cluster -n 5min-idp --kubeconfig ./kube/config.yaml --config ./setup/kind/cluster.yaml
-fi
 
-# connect current container to the kind network
-docker network connect "kind" "5min-idp"
+  # connect current container to the kind network
+  docker network connect "kind" "5min-idp"
+fi
 
 # used by humanitec-agent / inside docker to reach the cluster
 kubeconfig_docker=$(pwd)/kube/config-internal.yaml
