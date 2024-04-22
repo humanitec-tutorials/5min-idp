@@ -74,7 +74,7 @@ resource "humanitec_resource_definition_criteria" "dns_localhost" {
 module "postgres_basic" {
   # Not pinned as we don't have a release yet
   # tflint-ignore: terraform_module_pinned_source
-  source = "github.com/humanitec-architecture/resource-packs-in-cluster//humanitec-resource-defs/postgres/basic"
+  source = "github.com/humanitec-architecture/resource-packs-in-cluster//humanitec-resource-defs/postgres/basic?ref=main"
   prefix = local.prefix
 }
 
