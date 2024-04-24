@@ -1,39 +1,5 @@
-# 5min-idp - Quick Humanitec Demo
+# Five-minute IDP
 
-Your Humanitec Demo Environment in less than 3 minutes.
+Your Humanitec Internal Developer Platform (IDP) demo environment in less than five minutes.
 
-Required:
-
-* [humctl](https://developer.humanitec.com/platform-orchestrator/cli/)
-* docker
-
-## Usage
-
-### Configure
-
-```bash
-humctl login
-export HUMANITEC_ORG=MY_ORG
-```
-
-### Run
-
-* Start the toolbox
-
-  ```bash
-  docker run --rm -it -h 5min-idp --name 5min-idp --pull always \
-    -e HUMANITEC_ORG \
-    -v hum-5min-idp:/state \
-    -v $HOME/.humctl:/root/.humctl \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    --network bridge \
-    ghcr.io/humanitec-tutorials/5min-idp
-  ```
-
-* Use it!
-
-  ```bash
-  ./0_install.sh # install & connect a local cluster powered by kind
-  ./1_demo.sh # deploy your 1st score workload
-  ./2_cleanup.sh # cleanup everything
-  ```
+The material in this project provides the tooling for the ["Five-minute IDP"](https://developer.humanitec.com/introduction/getting-started/the-five-minute-idp/) getting started guide in the Humanitec developer docs. Please refer to that guide for usage instructions.
