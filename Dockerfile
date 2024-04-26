@@ -1,6 +1,6 @@
 FROM alpine:3.19
 
-LABEL org.opencontainers.image.source https://github.com/johanneswuerbach/5min-idp
+LABEL org.opencontainers.image.source https://github.com/humanitec-tutorials/5min-idp
 
 RUN apk add --no-cache \
   bash curl git jq bash-completion docker-cli && \
@@ -43,7 +43,7 @@ RUN  curl -fsSL https://github.com/mikefarah/yq/releases/latest/download/yq_linu
 
 # install humctl (https://github.com/humanitec/cli/releases)
 RUN mkdir /tmp/humctl && \
-  curl -fsSL https://github.com/humanitec/cli/releases/download/v0.21.1/cli_0.21.1_linux_${TARGETARCH}.tar.gz > /tmp/humctl/humctl.tar.gz && \
+  curl -fsSL https://github.com/humanitec/cli/releases/download/v0.23.0/cli_0.23.0_linux_${TARGETARCH}.tar.gz > /tmp/humctl/humctl.tar.gz && \
   tar -zxvf /tmp/humctl/humctl.tar.gz -C /tmp/humctl && \
   install -o root -g root -m 0755 /tmp/humctl/humctl /usr/local/bin/humctl && \
   humctl completion bash > /etc/bash_completion.d/humctl && \
