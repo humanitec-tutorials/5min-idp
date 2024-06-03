@@ -17,9 +17,6 @@ fi
 kubeconfig_docker=/state/kube/config-internal.yaml
 kind export kubeconfig --internal  -n 5min-idp --kubeconfig "$kubeconfig_docker"
 
-humctl_token=$(yq .token /root/.humctl)
-
-export HUMANITEC_TOKEN=$humctl_token
 export TF_VAR_humanitec_org=$HUMANITEC_ORG
 export TF_VAR_kubeconfig=$kubeconfig_docker
 
