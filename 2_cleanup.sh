@@ -7,10 +7,8 @@ if [ "$(docker inspect -f='{{json .NetworkSettings.Networks.kind}}' "${container
   docker network connect "kind" "${container_name}"
 fi
 
-humctl_token=$(yq .token /root/.humctl)
 kubeconfig_docker=/state/kube/config-internal.yaml
 
-export HUMANITEC_TOKEN=$humctl_token
 export TF_VAR_humanitec_org=$HUMANITEC_ORG
 export TF_VAR_kubeconfig=$kubeconfig_docker
 
