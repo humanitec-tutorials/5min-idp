@@ -72,7 +72,7 @@ resource "humanitec_resource_definition_criteria" "dns_localhost" {
 # Provide postgres resource
 
 module "postgres_basic" {
-  source = "github.com/humanitec-architecture/resource-packs-in-cluster//humanitec-resource-defs/postgres/basic?ref=v2024-06-05"
+  source = "github.com/humanitec-architecture/resource-packs-in-cluster//humanitec-resource-defs/postgres/basic?ref=v2024-06-07"
   prefix = local.prefix
 }
 
