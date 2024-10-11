@@ -13,9 +13,9 @@ echo "Waiting for workload to be available"
 
 # manually change the host here as the workload host resolves to localhost, which is not reachable from the container
 if curl -I --retry 30 --retry-delay 3 --retry-all-errors --fail \
-  --connect-to "$workload_host:30080:5min-idp-control-plane:30080" \
-  "http://$workload_host:30080"; then
-  echo "Workload available at: http://$workload_host:30080"
+  --connect-to "$workload_host:30443:5min-idp-control-plane:30443" \
+  "https://$workload_host:30443"; then
+  echo "Workload available at: https://$workload_host:30443"
 else
   echo "Workload not available"
   kubectl get pods --all-namespaces

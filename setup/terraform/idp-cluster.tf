@@ -78,7 +78,7 @@ resource "humanitec_resource_definition" "cluster_local" {
 
   driver_inputs = {
     values_string = jsonencode({
-      loadbalancer = "0.0.0.0" # ensure dns records are created pointing to localhost
+      loadbalancer = "127.0.0.1" # ensure dns records are created pointing to localhost
       cluster_data = local.parsed_kubeconfig["clusters"][0]["cluster"]
     })
     secrets_string = jsonencode({
