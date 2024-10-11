@@ -45,11 +45,10 @@ resource "humanitec_resource_definition" "dns_localhost" {
   id          = "${local.prefix}dns-localhost"
   name        = "${local.prefix}dns-localhost"
   type        = "dns"
-  driver_type = "humanitec/dns-wildcard"
+  driver_type = "humanitec/newapp-io-dns"
 
   driver_inputs = {
     values_string = jsonencode({
-      "domain"   = "localhost"
       "template" = "$${context.app.id}-{{ randAlphaNum 4 | lower}}"
     })
   }
