@@ -10,7 +10,7 @@ resource "random_string" "install_id" {
 locals {
   app         = "5min-idp-${random_string.install_id.result}"
   prefix      = "${local.app}-"
-  enviornment = "development-${random_string.install_id.result}"
+  environment = "development-${random_string.install_id.result}"
 }
 
 resource "humanitec_application" "demo" {
@@ -20,7 +20,7 @@ resource "humanitec_application" "demo" {
 
 resource "humanitec_environment" "demo" {
   app_id = humanitec_application.demo.id
-  id     = local.enviornment
+  id     = local.environment
   name   = "A demo environment for 5min-idp"
   type   = "development"
 }
