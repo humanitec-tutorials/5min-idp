@@ -8,13 +8,21 @@ resource "random_string" "install_id" {
 }
 
 locals {
-  app    = "5min-idp-${random_string.install_id.result}"
-  prefix = "${local.app}-"
+  app         = "5min-idp-${random_string.install_id.result}"
+  prefix      = "${local.app}-"
+  environment = "development-${random_string.install_id.result}"
 }
 
 resource "humanitec_application" "demo" {
   id   = local.app
   name = local.app
+}
+
+resource "humanitec_environment" "demo" {
+  app_id = humanitec_application.demo.id
+  id     = local.environment
+  name   = "A demo environment for 5min-idp"
+  type   = "development"
 }
 
 # Configure k8s namespace naming

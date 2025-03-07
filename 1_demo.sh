@@ -4,10 +4,11 @@ set -eo pipefail
 echo "Deploying workload"
 
 humanitec_app=$(terraform -chdir=setup/terraform output -raw humanitec_app)
+humanitec_environment=$(terraform -chdir=setup/terraform output -raw humanitec_environment)
 
-humctl score deploy --app "$humanitec_app" --env development -f ./score.yaml --wait
+humctl score deploy --app "$humanitec_app" --env "$humanitec_environment" -f ./score.yaml --wait
 
-workload_host=$(humctl get active-resources --app "$humanitec_app" --env development -o yaml | yq '.[] | select(.metadata.type == "route") | .status.resource.host')
+workload_host=$(humctl get active-resources --app "$humanitec_app" --env "$humanitec_environment" -o yaml | yq '.[] | select(.metadata.type == "route") | .status.resource.host')
 
 echo "Waiting for workload to be available"
 
@@ -19,6 +20,6 @@ if curl -I --retry 30 --retry-delay 3 --retry-all-errors --fail \
 else
   echo "Workload not available"
   kubectl get pods --all-namespaces
-  kubectl -n "$humanitec_app-development" logs deployment/hello-world
+  kubectl -n "$humanitec_app-$humanitec_environment" logs deployment/hello-world
   exit 1
 fi
