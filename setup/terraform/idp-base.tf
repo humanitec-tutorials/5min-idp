@@ -50,6 +50,7 @@ resource "humanitec_resource_definition_criteria" "k8s_namespace" {
 # Configure DNS for localhost
 
 resource "humanitec_resource_definition" "dns_localhost" {
+  depends_on = [helm_release.operator]
   id          = "${local.prefix}dns-localhost"
   name        = "${local.prefix}dns-localhost"
   type        = "dns"
@@ -79,6 +80,7 @@ resource "humanitec_resource_definition_criteria" "dns_localhost" {
 # Provide postgres resource
 
 module "postgres_basic" {
+  depends_on = [helm_release.operator]
   source = "github.com/humanitec-architecture/resource-packs-in-cluster//humanitec-resource-defs/postgres/basic?ref=v2024-06-07"
   prefix = local.prefix
 }
