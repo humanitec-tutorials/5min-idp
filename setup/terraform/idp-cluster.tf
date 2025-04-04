@@ -153,6 +153,6 @@ resource "humanitec_secretstore" "kubernetes_secret_store" {
   id      = "5min-idp-secrets"
   primary = true
   vault = {
-    url = "https://example.com"
+    url = "http://fake-vault"
   }
 }
